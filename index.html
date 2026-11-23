@@ -2699,6 +2699,7 @@ var qrcode = function() {
 var TLCore = (function () {
   'use strict';
   var LETTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  var BONUS_QUESTION_MAX_LENGTH = 300;
 
   function clone(x) { return x == null ? x : JSON.parse(JSON.stringify(x)); }
 
@@ -2923,7 +2924,7 @@ var TLCore = (function () {
       if (!q || typeof q !== 'object') return;
       var o = { k: q.k === 'song' ? 'song' : 'event', l: String(q.l || '').slice(0, 80), p: String(q.p || '').slice(0, 200), y: numOrNull(q.y), b: null };
       if (q.b && (q.b.t === 'mc' || q.b.t === 'text')) {
-        o.b = { t: q.b.t, q: String(q.b.q || '').slice(0, 160) };
+        o.b = { t: q.b.t, q: String(q.b.q || '').slice(0, BONUS_QUESTION_MAX_LENGTH) };
         if (q.b.t === 'mc') {
           o.b.o = (Array.isArray(q.b.o) ? q.b.o : []).slice(0, 4).map(function (x) { return String(x || '').slice(0, 60); });
           while (o.b.o.length < 4) o.b.o.push('');
@@ -2944,6 +2945,7 @@ var TLCore = (function () {
   }
 
   return {
+    BONUS_QUESTION_MAX_LENGTH: BONUS_QUESTION_MAX_LENGTH,
     clone: clone, distinctYears: distinctYears, correctSlots: correctSlots, slotRange: slotRange, letter: letter,
     norm: norm, lev: lev, textMatch: textMatch, bonusOk: bonusOk, bonusDisplay: bonusDisplay,
     displayNames: displayNames, teamIds: teamIds, scoreRound: scoreRound, ranking: ranking,
@@ -3774,7 +3776,7 @@ function TLmountHost(root, backend, opts) {
         redraw();
       })));
     if (q.b) {
-      body.appendChild(field('Bonus question text', h('input', { id: id + 'bq', type: 'text', maxlength: '160', value: q.b.q, placeholder: q.k === 'song' ? 'e.g. Who performs this song?' : 'e.g. In which city did it happen?', oninput: function (e) { q.b.q = e.target.value; saveBank(); } })));
+      body.appendChild(field('Bonus question text', h('input', { id: id + 'bq', type: 'text', maxlength: C.BONUS_QUESTION_MAX_LENGTH, value: q.b.q, placeholder: q.k === 'song' ? 'e.g. Who performs this song?' : 'e.g. In which city did it happen?', oninput: function (e) { q.b.q = e.target.value; saveBank(); } })));
       if (q.b.t === 'mc') {
         body.appendChild(h('div', { class: 'fld' }, h('span', { class: 'fld-l', text: 'Options (tick the correct one; 2 to 4)' }),
           h('div', { class: 'opts' }, [0, 1, 2, 3].map(function (k) {
