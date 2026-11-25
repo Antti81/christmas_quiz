@@ -6,15 +6,15 @@
 <title>Christmas Timeline</title>
 
 <!-- =====================================================================
-  CONNECT THIS PAGE TO YOUR FIREBASE PROJECT  (setup guide, step 1)
+  FIREBASE SETTINGS: you do not need to edit this file.
 
-  Replace the single line PASTE-FIREBASE-CONFIG-HERE below with the
-  snippet the Firebase console shows you. Paste all of it; it contains
-  lines such as   apiKey: "...",   and   projectId: "...",
-  Change nothing else in this file.
-
-  While that line is still there, the page runs in demo mode on one
+  Put your Firebase settings in a separate file called
+  firebase-config.txt, next to this one (setup guide, "Update to the
+  new version"). Without that file the page runs in demo mode on one
   device only.
+
+  Pasting the settings in place of the line PASTE-FIREBASE-CONFIG-HERE
+  below also works.
 ===================================================================== -->
 <script type="text/plain" id="firebase-config">
 // PASTE-FIREBASE-CONFIG-HERE
@@ -151,7 +151,8 @@ body.demo #dock{display:flex;flex-direction:column;flex:0 0 372px;height:100%;bo
 .st-timeline{flex:0 0 auto}
 .tl-cap{text-align:center;color:var(--muted);font-size:.85em;text-transform:uppercase;letter-spacing:.14em}
 .st-ctl{display:flex;justify-content:flex-end;align-items:center;gap:.7em;flex-wrap:wrap}
-.saving{color:var(--gold);font-size:.9em;margin-right:auto}
+.ctl-left{display:flex;gap:.7em;align-items:center;flex-wrap:wrap;margin-right:auto}
+.saving{color:var(--gold);font-size:.9em}
 
 .lobby{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:2em;align-items:stretch}
 .join-card{background:var(--pine);border:2px solid var(--line);border-radius:1.2em;padding:1.4em;display:flex;gap:1.6em;align-items:center}
@@ -228,6 +229,27 @@ body.demo #dock{display:flex;flex-direction:column;flex:0 0 372px;height:100%;bo
 .st-delta{font-weight:800;color:var(--ink);background:var(--gold);border-radius:.4em;padding:0 .4em;font-size:.85em;font-variant-numeric:tabular-nums}
 .st-delta.zero{background:transparent;color:var(--muted)}
 .st-more{color:var(--muted);margin:.5em 0 0;font-size:.9em}
+/* title cards */
+.title-card{text-align:center;display:flex;flex-direction:column;align-items:center;gap:.5em;padding:.5em 1em}
+.tc-kicker{text-transform:uppercase;letter-spacing:.2em;font-weight:800;font-size:1.2em;color:var(--ice)}
+.tc-game .tc-kicker{color:var(--gold)}
+.tc-big{font-family:var(--display);line-height:.95;color:var(--cream);overflow-wrap:anywhere;max-width:100%;
+  font-size:min(9em,calc(var(--stage-w,100vw) * 1.25 / var(--len,8)));animation:stamp .7s cubic-bezier(.2,1.5,.4,1) both}
+.tc-warm .tc-big{text-shadow:.06em .06em 0 #2f6f86}
+.tc-game .tc-big{color:var(--gold);text-shadow:.06em .06em 0 var(--berry)}
+.tc-sub{font-size:1.5em;margin:.2em 0 0;max-width:40em;text-wrap:balance}
+.tc-steps{list-style:none;margin:.9em 0 0;padding:0;display:flex;gap:1em;flex-wrap:wrap;justify-content:center}
+.tc-steps li{display:flex;align-items:center;gap:.6em;background:var(--pine);border:2px solid var(--line);border-radius:.8em;padding:.6em 1em;font-size:1.15em;font-weight:600;max-width:17em;text-align:left}
+.tc-num{flex:0 0 auto;width:1.9em;height:1.9em;border-radius:50%;background:var(--ice);color:var(--ink);display:grid;place-items:center;font-family:var(--display)}
+.st-mid.warm{background:var(--ice);color:var(--ink);border-radius:999px;padding:.25em .9em}
+.badge.warm{background:#2f6f86}
+.p-title{font-family:var(--display);font-size:52px;line-height:1;overflow-wrap:anywhere;max-width:100%}
+.p-title.warm{color:var(--cream);text-shadow:3px 3px 0 #2f6f86}
+.p-title.game{color:var(--gold);text-shadow:3px 3px 0 var(--berry)}
+.p-main.center .p-title + .p-lead{margin-top:6px}
+@keyframes stamp{from{transform:scale(1.6) rotate(-4deg);opacity:0}}
+.warm-note{font-size:1.25em;margin:0;line-height:1.35}
+.warm-done{text-align:center;font-weight:700}
 
 .final{display:flex;flex-direction:column;align-items:center;gap:1.2em}
 .podium{display:flex;align-items:flex-end;justify-content:center;gap:1em;width:100%;max-width:52em}
@@ -246,6 +268,9 @@ body.demo #dock{display:flex;flex-direction:column;flex:0 0 372px;height:100%;bo
 .su-head{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap}
 .su-head h1{font-family:var(--display);font-weight:400;font-size:34px;line-height:1.1;margin:0;color:var(--gold)}
 .su-sub{margin:6px 0 0;color:var(--muted);max-width:62ch}
+.loading{color:var(--muted);text-align:center;margin-top:30vh}
+.su-ver{margin:4px 0 0;color:var(--muted);font-size:13px}
+.p-ver{margin:24px 0 0;color:#6f8a81;font-size:12px;text-align:center}
 .pill{display:inline-block;border-radius:999px;padding:6px 14px;font-weight:700;font-size:14px;background:var(--pine-2)}
 .pill.ok{background:#1d4f3a;color:var(--good)} .pill.warn{background:#4a3a12;color:var(--gold)} .pill.bad{background:#4a1d22;color:var(--bad)}
 .su-grid{display:grid;grid-template-columns:minmax(0,380px) minmax(0,1fr);gap:16px;align-items:start}
@@ -2735,20 +2760,20 @@ var TLCore = (function () {
     return t.replace(/\s+/g, ' ').trim();
   }
 
+  /* Edit distance where a wrong, missing, extra or swapped letter each counts as one typo. */
   function lev(a, b) {
     if (a === b) return 0;
-    var m = a.length, n = b.length, i, j;
+    var m = a.length, n = b.length, i, j, d = [];
     if (!m) return n; if (!n) return m;
-    var prev = [], cur = [];
-    for (j = 0; j <= n; j++) prev[j] = j;
+    for (i = 0; i <= m; i++) d[i] = [i];
+    for (j = 0; j <= n; j++) d[0][j] = j;
     for (i = 1; i <= m; i++) {
-      cur = [i];
       for (j = 1; j <= n; j++) {
-        cur[j] = Math.min(prev[j] + 1, cur[j - 1] + 1, prev[j - 1] + (a.charCodeAt(i - 1) === b.charCodeAt(j - 1) ? 0 : 1));
+        d[i][j] = Math.min(d[i - 1][j] + 1, d[i][j - 1] + 1, d[i - 1][j - 1] + (a.charCodeAt(i - 1) === b.charCodeAt(j - 1) ? 0 : 1));
+        if (i > 1 && j > 1 && a.charCodeAt(i - 1) === b.charCodeAt(j - 2) && a.charCodeAt(i - 2) === b.charCodeAt(j - 1)) d[i][j] = Math.min(d[i][j], d[i - 2][j - 2] + 1);
       }
-      prev = cur;
     }
-    return prev[n];
+    return d[m][n];
   }
 
   /* One typo is forgiven in answers of five letters or more; never in answers that contain digits. */
@@ -2812,9 +2837,10 @@ var TLCore = (function () {
       }
       if (p === true) nPlace++;
       if (b === true) nBonus++;
-      var delta = (p === true ? round.pp : 0) + (b === true ? round.bp : 0);
+      /* The warm-up shows right and wrong but changes no scores. */
+      var delta = round.warm ? 0 : (p === true ? round.pp : 0) + (b === true ? round.bp : 0);
       var before = (prev && prev[id]) || { s: 0, c: 0 };
-      sc[id] = { n: names[id], s: before.s + delta, c: before.c + (p === true ? 1 : 0), d: delta, p: p, b: b };
+      sc[id] = { n: names[id], s: before.s + delta, c: before.c + (!round.warm && p === true ? 1 : 0), d: delta, p: p, b: b };
     });
     return { sc: sc, rv: { y: round.year, slots: ok, dist: dist, nAns: nAns, nTeams: ids.length, nPlace: nPlace, nBonus: nBonus } };
   }
@@ -2846,45 +2872,49 @@ var TLCore = (function () {
 
   function isYear(y) { return typeof y === 'number' && isFinite(y) && Math.floor(y) === y && y >= 1 && y <= 2100; }
 
+  function checkQ(q, n, errs) {
+    if (!String(q.l || '').trim()) errs.push(n + 'add the card title.');
+    if (!isYear(q.y)) errs.push(n + 'add a year (1 to 2100).');
+    if (q.b) {
+      if (!String(q.b.q || '').trim()) errs.push(n + 'write the bonus question, or set the bonus to "None".');
+      if (q.b.t === 'mc') {
+        var opts = (q.b.o || []).map(function (o) { return String(o || '').trim(); });
+        if (opts.filter(Boolean).length < 2) errs.push(n + 'give at least two bonus options.');
+        if (opts.some(function (o, k) { return !o && opts.slice(k + 1).some(Boolean); })) errs.push(n + 'fill the bonus options in order, without gaps.');
+        if (!opts[q.b.c]) errs.push(n + 'mark which bonus option is correct.');
+      } else if (!(q.b.acc || []).filter(function (a) { return norm(a); }).length) {
+        errs.push(n + 'give at least one accepted bonus answer.');
+      }
+    }
+  }
+
   /* Returns a list of problems in plain words; empty list = ready to play. */
   function validateBank(bank) {
     var errs = [];
     if (!bank.start || !String(bank.start.l || '').trim()) errs.push('Starter card: add a title.');
     if (!bank.start || !isYear(bank.start.y)) errs.push('Starter card: add a year (1 to 2100).');
     if (!bank.qs || !bank.qs.length) errs.push('Add at least one question.');
-    (bank.qs || []).forEach(function (q, i) {
-      var n = 'Question ' + (i + 1) + ': ';
-      if (!String(q.l || '').trim()) errs.push(n + 'add the card title.');
-      if (!isYear(q.y)) errs.push(n + 'add a year (1 to 2100).');
-      if (q.b) {
-        if (!String(q.b.q || '').trim()) errs.push(n + 'write the bonus question, or set the bonus to "None".');
-        if (q.b.t === 'mc') {
-          var opts = (q.b.o || []).map(function (o) { return String(o || '').trim(); });
-          if (opts.filter(Boolean).length < 2) errs.push(n + 'give at least two bonus options.');
-          if (opts.some(function (o, k) { return !o && opts.slice(k + 1).some(Boolean); })) errs.push(n + 'fill the bonus options in order, without gaps.');
-          if (!opts[q.b.c]) errs.push(n + 'mark which bonus option is correct.');
-        } else if (!(q.b.acc || []).filter(function (a) { return norm(a); }).length) {
-          errs.push(n + 'give at least one accepted bonus answer.');
-        }
-      }
-    });
+    if (bank.warm) checkQ(bank.warm, 'Warm-up question: ', errs);
+    (bank.qs || []).forEach(function (q, i) { checkQ(q, 'Question ' + (i + 1) + ': ', errs); });
     return errs;
   }
 
   /* The part of a question that is safe to send to phones before the reveal. */
-  function publicQuestion(q, bank, ys) {
+  function publicQuestion(q, bank, ys, warm) {
     var b = null;
     if (q.b) {
       b = { t: q.b.t, q: String(q.b.q).trim() };
       if (q.b.t === 'mc') b.o = q.b.o.map(function (o) { return String(o || '').trim(); }).filter(Boolean);
     }
-    return { k: q.k === 'song' ? 'song' : 'event', p: String(q.p || '').trim() || (q.k === 'song' ? '' : String(q.l).trim()), b: b, pp: bank.pp, bp: bank.bp, ys: ys };
+    return { k: q.k === 'song' ? 'song' : 'event', p: String(q.p || '').trim() || (q.k === 'song' ? '' : String(q.l).trim()), b: b, pp: bank.pp, bp: bank.bp, ys: ys, w: !!warm };
   }
 
   function sampleBank() {
     return {
       title: 'Christmas Timeline', lang: 'en', dur: 45, pp: 2, bp: 1,
       start: { l: 'Euro notes and coins arrive in Finland', y: 2002 },
+      warm: { k: 'event', l: 'Finland declares independence', p: '', y: 1917,
+        b: { t: 'mc', q: 'On which date is Finland\u2019s Independence Day?', o: ['1 December', '6 December', '13 December', '24 December'], c: 1 } },
       qs: [
         { k: 'song', l: 'Wham! – Last Christmas', p: '', y: 1984,
           b: { t: 'mc', q: 'Who performs this song?', o: ['Band Aid', 'Wham!', 'Slade', 'Shakin’ Stevens'], c: 1 } },
@@ -2907,7 +2937,7 @@ var TLCore = (function () {
   }
 
   function emptyBank() {
-    return { title: 'Christmas Timeline', lang: 'en', dur: 45, pp: 2, bp: 1, start: { l: '', y: null }, qs: [] };
+    return { title: 'Christmas Timeline', lang: 'en', dur: 45, pp: 2, bp: 1, start: { l: '', y: null }, warm: null, qs: [] };
   }
 
   /* Accepts a bank from a file or pasted text and keeps only fields this game understands. */
@@ -2920,22 +2950,24 @@ var TLCore = (function () {
     n = Number(raw.pp); if (isFinite(n) && n >= 0 && n <= 100) b.pp = Math.round(n);
     n = Number(raw.bp); if (isFinite(n) && n >= 0 && n <= 100) b.bp = Math.round(n);
     if (raw.start) b.start = { l: String(raw.start.l || '').slice(0, 80), y: numOrNull(raw.start.y) };
-    (Array.isArray(raw.qs) ? raw.qs : []).slice(0, 40).forEach(function (q) {
-      if (!q || typeof q !== 'object') return;
-      var o = { k: q.k === 'song' ? 'song' : 'event', l: String(q.l || '').slice(0, 80), p: String(q.p || '').slice(0, 200), y: numOrNull(q.y), b: null };
-      if (q.b && (q.b.t === 'mc' || q.b.t === 'text')) {
-        o.b = { t: q.b.t, q: String(q.b.q || '').slice(0, BONUS_QUESTION_MAX_LENGTH) };
-        if (q.b.t === 'mc') {
-          o.b.o = (Array.isArray(q.b.o) ? q.b.o : []).slice(0, 4).map(function (x) { return String(x || '').slice(0, 60); });
-          while (o.b.o.length < 4) o.b.o.push('');
-          o.b.c = Math.max(0, Math.min(3, Number(q.b.c) || 0));
-        } else {
-          o.b.acc = (Array.isArray(q.b.acc) ? q.b.acc : []).slice(0, 12).map(function (x) { return String(x || '').slice(0, 60); });
-        }
-      }
-      b.qs.push(o);
-    });
+    b.warm = raw.warm && typeof raw.warm === 'object' ? cleanQ(raw.warm) : null;
+    (Array.isArray(raw.qs) ? raw.qs : []).slice(0, 40).forEach(function (q) { if (q && typeof q === 'object') b.qs.push(cleanQ(q)); });
     return b;
+  }
+
+  function cleanQ(q) {
+    var o = { k: q.k === 'song' ? 'song' : 'event', l: String(q.l || '').slice(0, 80), p: String(q.p || '').slice(0, 200), y: numOrNull(q.y), b: null };
+    if (q.b && (q.b.t === 'mc' || q.b.t === 'text')) {
+      o.b = { t: q.b.t, q: String(q.b.q || '').slice(0, BONUS_QUESTION_MAX_LENGTH) };
+      if (q.b.t === 'mc') {
+        o.b.o = (Array.isArray(q.b.o) ? q.b.o : []).slice(0, 4).map(function (x) { return String(x || '').slice(0, 60); });
+        while (o.b.o.length < 4) o.b.o.push('');
+        o.b.c = Math.max(0, Math.min(3, Number(q.b.c) || 0));
+      } else {
+        o.b.acc = (Array.isArray(q.b.acc) ? q.b.acc : []).slice(0, 12).map(function (x) { return String(x || '').slice(0, 60); });
+      }
+    }
+    return o;
   }
 
   function numOrNull(v) {
@@ -2956,6 +2988,8 @@ var TLCore = (function () {
 if (typeof module === 'object' && module.exports) module.exports = TLCore;
 
 /* ---------- Words shown to guests, in English and Finnish ---------- */
+var TL_VERSION = 'Version 6 \u00b7 17 Nov 2026';
+
 var TLWords = {
   en: {
     join_title: 'Join the game',
@@ -3000,8 +3034,29 @@ var TLWords = {
     code_word: 'code',
     saving: 'Saving… check the internet connection',
     no_teams_yet: 'No teams yet',
-    remove_hint: 'Click a team to remove it',
+    remove_hint: 'Click a team twice to remove it',
     remove_q: 'Remove?',
+    main_menu: 'Main menu',
+    warm: 'Warm-up',
+    warm_np: 'Warm-up \u00b7 no points',
+    tc_warm_kicker: 'Before the real game',
+    tc_warm_sub: 'A practice round: no points, just see how it works.',
+    tc_step1: 'Listen to the song or read the event.',
+    tc_step2: 'On your phone, pick where it belongs on the timeline.',
+    tc_step3: 'Answer the bonus question and send.',
+    tc_game_kicker: '{n} questions',
+    tc_game_big: 'Game on!',
+    tc_game_sub: 'From now on every answer counts: {pp} points for the right place, {bp} for the bonus.',
+    show_warm_q: 'Show the warm-up question',
+    show_q1: 'Show question 1',
+    p_tc_warm: 'Practice round, no points. Watch the big screen.',
+    p_tc_game: 'Every answer counts from now on. Watch the big screen.',
+    start_warm: 'Start the warm-up',
+    warm_note: 'No points this time. The real game starts next.',
+    p_warm_done: 'Warm-up round: no points. The real game starts next.',
+    end_game_q: 'End this game?',
+    teams_btn: 'Teams',
+    close: 'Close',
 
     p_code: 'Game code', p_team: 'Team name', p_join: 'Join',
     p_team_ph: 'e.g. The Auditors',
@@ -3036,6 +3091,7 @@ var TLWords = {
     p_connecting: 'Connecting…',
     p_top: 'Top teams',
     p_again: 'Join another game',
+    p_off: 'This game is not open right now.',
     p_slow: 'Still connecting. Check that your phone is online; this page keeps trying.',
     p_closed: 'The host closed this game.'
   },
@@ -3082,8 +3138,29 @@ var TLWords = {
     code_word: 'koodi',
     saving: 'Tallennetaan… tarkista verkkoyhteys',
     no_teams_yet: 'Ei vielä joukkueita',
-    remove_hint: 'Poista joukkue klikkaamalla sitä',
+    remove_hint: 'Poista joukkue klikkaamalla sitä kahdesti',
     remove_q: 'Poistetaanko?',
+    main_menu: 'P\u00e4\u00e4valikko',
+    warm: 'Harjoituskierros',
+    warm_np: 'Harjoituskierros \u00b7 ei pisteit\u00e4',
+    tc_warm_kicker: 'Ennen varsinaista peli\u00e4',
+    tc_warm_sub: 'Harjoituskierros: ei pisteit\u00e4, katsotaan miten peli toimii.',
+    tc_step1: 'Kuunnelkaa kappale tai lukekaa tapahtuma.',
+    tc_step2: 'Valitkaa puhelimella, mihin kohtaan aikajanaa se kuuluu.',
+    tc_step3: 'Vastatkaa bonuskysymykseen ja l\u00e4hett\u00e4k\u00e4\u00e4.',
+    tc_game_kicker: '{n} kysymyst\u00e4',
+    tc_game_big: 'Peli alkaa!',
+    tc_game_sub: 'Nyt jokainen vastaus lasketaan: {pp} pistett\u00e4 oikeasta kohdasta, {bp} bonuksesta.',
+    show_warm_q: 'N\u00e4yt\u00e4 harjoituskysymys',
+    show_q1: 'N\u00e4yt\u00e4 kysymys 1',
+    p_tc_warm: 'Harjoituskierros, ei pisteit\u00e4. Seuratkaa isoa n\u00e4ytt\u00f6\u00e4.',
+    p_tc_game: 'Nyt jokainen vastaus lasketaan. Seuratkaa isoa n\u00e4ytt\u00f6\u00e4.',
+    start_warm: 'Aloita harjoituskierros',
+    warm_note: 'T\u00e4st\u00e4 ei saa pisteit\u00e4. Varsinainen peli alkaa seuraavaksi.',
+    p_warm_done: 'Harjoituskierros: ei pisteit\u00e4. Varsinainen peli alkaa seuraavaksi.',
+    end_game_q: 'Lopetetaanko peli?',
+    teams_btn: 'Joukkueet',
+    close: 'Sulje',
 
     p_code: 'Pelikoodi', p_team: 'Joukkueen nimi', p_join: 'Liity',
     p_team_ph: 'esim. Tilintarkastajat',
@@ -3118,6 +3195,7 @@ var TLWords = {
     p_connecting: 'Yhdistetään…',
     p_top: 'Kärkijoukkueet',
     p_again: 'Liity toiseen peliin',
+    p_off: 'Peli ei ole nyt auki.',
     p_slow: 'Yhdistetään yhä. Tarkista puhelimen verkkoyhteys; sivu yrittää koko ajan uudelleen.',
     p_closed: 'Pelinjohtaja sulki tämän pelin.'
   }
@@ -3147,24 +3225,32 @@ function TLparseConfig(text) {
 /* Turns a technical error into a sentence that says what to do. */
 function TLexplain(err) {
   var code = (err && err.code) || '', msg = (err && err.message) || String(err || '');
+  if (/admin-restricted-operation|operation-not-allowed|configuration-not-found/.test(code)) {
+    return 'Anonymous sign-in is switched off in Firebase. This only matters with the protected rules (setup guide, \u201cOptional: extra protection\u201d).';
+  }
+  if (/auth\/(too-many-requests|quota-exceeded)/.test(code)) {
+    return 'Too many new phones have joined from this network in the last hour. Use mobile data instead of the Wi-Fi, or try again later.';
+  }
+  if (/network-request-failed/.test(code)) return 'Cannot reach Firebase. Check the internet connection, then try again.';
   if (/permission-denied/.test(code) || /insufficient permissions/i.test(msg)) {
-    return 'Firebase refused the request. Publish the Firestore rules from the setup guide (step 1) and check that their end date has not passed.';
+    if (TLexplain.authErr) return TLexplain(TLexplain.authErr);
+    return 'Firebase refused the request. Check that the game is switched on and the date in the rules has not passed (setup guide, \u201cSwitch the game off and on\u201d). With the protected rules, only the browser that created a game can run it, so use the same browser, not a private window.';
   }
   if (/does not exist/i.test(msg) || /not-found/.test(code)) {
-    return 'The Firestore database has not been created yet. Create it in the Firebase console (setup guide, step 1).';
+    return 'The Firestore database has not been created yet (setup guide, \u201cSetting up from scratch\u201d).';
   }
   if (/unavailable/.test(code) || /offline/i.test(msg) || /Failed to fetch|import/i.test(msg)) {
     return 'Cannot reach Firebase. Check the internet connection, then reload the page.';
   }
   if (/api[- ]?key/i.test(msg) || /invalid-argument/.test(code)) {
-    return 'Firebase did not accept the pasted configuration. Paste it again from the Firebase console (setup guide, step 1). Details: ' + msg;
+    return 'Firebase did not accept the settings in firebase-config.txt. Copy them again (setup guide, \u201cUpdate to the new version\u201d). Details: ' + msg;
   }
   return 'Something went wrong talking to Firebase: ' + msg;
 }
 
 /* ----- Demo mode: everything stays in this page's memory ----- */
 function TLLocalBackend() {
-  this.demo = true; this.offset = 0; this.label = 'demo';
+  this.demo = true; this.offset = 0; this.label = 'demo'; this.uid = 'demo';
   this._games = {}; this._teams = {}; this._gw = {}; this._tw = {};
 }
 TLLocalBackend.prototype = {
@@ -3217,7 +3303,7 @@ TLLocalBackend.prototype = {
 /* ----- Online mode: Cloud Firestore ----- */
 function TLFirestoreBackend(cfg) {
   this.demo = false; this.offset = 0; this.cfg = cfg; this.label = cfg.projectId;
-  this.f = null; this.db = null; this._ready = null;
+  this.f = null; this.db = null; this._ready = null; this.uid = null; this.authErr = null;
 }
 TLFirestoreBackend.SDK = 'https://www.gstatic.com/firebasejs/12.17.1/';
 TLFirestoreBackend.prototype = {
@@ -3226,12 +3312,25 @@ TLFirestoreBackend.prototype = {
     if (self._ready) return self._ready;
     self._ready = Promise.all([
       import(TLFirestoreBackend.SDK + 'firebase-app.js'),
-      import(TLFirestoreBackend.SDK + 'firebase-firestore.js')
+      import(TLFirestoreBackend.SDK + 'firebase-firestore.js'),
+      import(TLFirestoreBackend.SDK + 'firebase-auth.js')
     ]).then(function (mods) {
       var app = mods[0].initializeApp(self.cfg);
       self.f = mods[1];
       self.db = self.f.getFirestore(app);
       if (window.__TL_EMULATOR_PORT__) self.f.connectFirestoreEmulator(self.db, '127.0.0.1', window.__TL_EMULATOR_PORT__);
+      /* Every device signs in without a name or password. The database rules use this identity:
+         only the browser that created a game can change it, and each phone can change only its own team.
+         The same browser keeps the same identity after a reload. */
+      var A = mods[2];
+      return A.signInAnonymously(A.getAuth(app)).then(function (cred) { self.uid = cred.user.uid; }, function (e) {
+        if (/network-request-failed/.test(e.code || '')) throw e;
+        /* Sign-in is not set up in the console. Carry on unsigned: the simple (open) rules still work. */
+        self.authErr = e; TLexplain.authErr = e;
+        var id = TLstore.get('tl.uid');
+        if (!id) { id = 'local' + TLCore.makeId(); TLstore.set('tl.uid', id); }
+        self.uid = id;
+      });
     }).catch(function (e) { self._ready = null; throw e; });
     return self._ready;
   },
@@ -3265,8 +3364,8 @@ TLFirestoreBackend.prototype = {
     }, function (e) { if (onErr) onErr(e); });
   },
   /* Measures the difference between this device's clock and Firebase's, so countdowns agree on every screen. */
-  syncClock: function (code, id) {
-    var self = this, f = this.f, ref = f.doc(this.db, 'games', code, 'pings', id), t0 = Date.now();
+  syncClock: function (code) {
+    var self = this, f = this.f, ref = f.doc(this.db, 'games', code, 'pings', this.uid), t0 = Date.now();
     return f.setDoc(ref, { t: f.serverTimestamp() }).then(function () {
       var t1 = Date.now();
       return f.getDoc(ref).then(function (s) {
@@ -3491,7 +3590,7 @@ function TLmountHost(root, backend, opts) {
   function attach() {
     detach();
     S.unsubTeams = backend.watchTeams(S.code, function (m) { S.teams = m || {}; onTeams(); }, fail);
-    backend.syncClock(S.code, 'host');
+    backend.syncClock(S.code);
     S.tick = setInterval(tick, 200);
   }
   function detach() {
@@ -3513,10 +3612,12 @@ function TLmountHost(root, backend, opts) {
     S.busy = true; S.err = ''; render();
     backend.init().then(pickCode).then(function (code) {
       var b = C.cleanBank(S.bank);
+      /* The warm-up is played as question 0 and scores nothing. */
+      if (b.warm) b.qs = [b.warm].concat(b.qs);
       S.busy = false; S.code = code; S.gbank = b; S.teams = {}; S.seen = {}; S.resume = null;
       if (backend.reset) backend.reset(code);
       S.G = {
-        v: 1, gid: C.makeId(), title: b.title.trim() || 'Christmas Timeline', lang: b.lang, phase: 'lobby', qi: -1, qn: b.qs.length,
+        v: 1, gid: C.makeId(), owner: backend.uid, title: b.title.trim() || 'Christmas Timeline', lang: b.lang, phase: 'lobby', qi: -1, qn: b.qs.length, wu: b.warm ? 1 : 0,
         cards: [{ y: b.start.y, l: b.start.l.trim(), k: 'start' }],
         q: null, endsAt: null, tot: 0, dur: b.dur, rv: null, sc: {}, gone: [], closed: false
       };
@@ -3540,8 +3641,13 @@ function TLmountHost(root, backend, opts) {
     var G = S.G, qi = G.qi + 1;
     if (qi >= G.qn) return finish();
     keepAwake();
+    var tk = G.wu && qi === 0 ? 'warm' : qi === (G.wu || 0) ? 'game' : null;
+    if (tk && G.phase !== 'title') {
+      G.phase = 'title'; G.tk = tk; G.q = null; G.rv = null; G.endsAt = null;
+      push(); render(); return;
+    }
     var q = S.gbank.qs[qi];
-    G.qi = qi; G.q = C.publicQuestion(q, S.gbank, C.distinctYears(G.cards)); G.rv = null; G.phase = 'question';
+    G.qi = qi; G.q = C.publicQuestion(q, S.gbank, C.distinctYears(G.cards), !!G.wu && qi === 0); G.rv = null; G.phase = 'question';
     G.tot = G.dur * 1000; G.endsAt = G.dur > 0 ? backend.now() + G.tot : null;
     push(); render(); scheduleBots();
   }
@@ -3560,7 +3666,7 @@ function TLmountHost(root, backend, opts) {
     var G = S.G;
     if (G.phase !== 'locked') return;
     var q = S.gbank.qs[G.qi];
-    var res = C.scoreRound({ ys: G.q.ys, year: q.y, bonus: q.b, pp: G.q.pp, bp: G.q.bp, qi: G.qi }, S.teams, G.sc, G.gone);
+    var res = C.scoreRound({ ys: G.q.ys, year: q.y, bonus: q.b, pp: G.q.pp, bp: G.q.bp, qi: G.qi, warm: !!G.q.w }, S.teams, G.sc, G.gone);
     G.sc = res.sc;
     G.rv = res.rv; G.rv.l = q.l.trim(); G.rv.ba = C.bonusDisplay(q.b);
     G.cards.push({ y: q.y, l: q.l.trim(), k: q.k === 'song' ? 'song' : 'event' });
@@ -3582,7 +3688,7 @@ function TLmountHost(root, backend, opts) {
   }
   function primary() {
     var G = S.G; if (!G) return;
-    if (G.phase === 'lobby' || G.phase === 'reveal') nextQuestion();
+    if (G.phase === 'lobby' || G.phase === 'reveal' || G.phase === 'title') nextQuestion();
     else if (G.phase === 'question') lock();
     else if (G.phase === 'locked' && Date.now() - S.lockedAt >= 1500) reveal();
   }
@@ -3632,7 +3738,8 @@ function TLmountHost(root, backend, opts) {
   function onTeams() {
     if (!S.G) return;
     if (S.G.phase === 'lobby') drawTeams();
-    else if (el.count && S.G.phase === 'question') { var c = answeredCount(); el.count.textContent = T('answered', c); }
+    if (el.teamsDraw) el.teamsDraw();
+    if (el.count && S.G.phase === 'question') { var c0 = answeredCount(); el.count.textContent = T('answered', c0); }
   }
   function tick() {
     var G = S.G; if (!G) return;
@@ -3655,6 +3762,7 @@ function TLmountHost(root, backend, opts) {
     var t = e.target && e.target.tagName;
     if (t === 'INPUT' || t === 'TEXTAREA' || t === 'SELECT' || t === 'BUTTON' || t === 'SUMMARY') return;
     if (e.target && e.target.closest && e.target.closest('.phone')) return;
+    if (root.querySelector('.overlay')) return;
     if (e.key !== ' ' && e.key !== 'ArrowRight' && e.key !== 'PageDown') return;
     e.preventDefault();
     if (Date.now() - S.lastKey < 700) return;
@@ -3688,17 +3796,21 @@ function TLmountHost(root, backend, opts) {
     var wrap = h('div', { class: 'host setup' });
     var pill = S.online === 'demo' ? h('span', { class: 'pill warn', text: 'Demo mode: this device only' })
       : S.online === 'ok' ? h('span', { class: 'pill ok', text: 'Online: Firebase project ' + backend.label })
+      : S.online === 'off' ? h('span', { class: 'pill bad', text: 'Switched off' })
       : S.online === 'bad' ? h('span', { class: 'pill bad', text: 'Not connected' })
       : h('span', { class: 'pill', text: 'Connecting to Firebase…' });
     wrap.appendChild(h('header', { class: 'su-head' },
-      h('div', null, h('h1', { text: 'Christmas Timeline' }), h('p', { class: 'su-sub', text: 'Host setup. Write your questions, then create the game and show this screen on the projector.' })),
+      h('div', null, h('h1', { text: 'Christmas Timeline' }), h('p', { class: 'su-sub', text: 'Host setup. Write your questions, then create the game and show this screen on the projector.' }), h('p', { class: 'su-ver', text: TL_VERSION })),
       pill));
     if (backend.demo) wrap.appendChild(h('div', { class: 'banner warn' },
       h('b', { text: 'This copy is not online yet, so other phones cannot join. ' }),
-      'You can still play a full test round here: create the game, add robot teams and answer on the test phone. To go online, follow step 1 of the setup guide.'));
+      'You can still play a full test round here: create the game, add robot teams and answer on the test phone. To go online, add the file firebase-config.txt (setup guide, \u201cUpdate to the new version\u201d).'));
     if (S.err) wrap.appendChild(h('div', { class: 'banner bad', text: S.err }));
+    if (backend.authErr && !S.err) wrap.appendChild(h('div', { class: 'banner info' },
+      h('span', null, h('b', { text: 'Extra protection is off. ' }),
+        'This is normal unless you set it up, and the game works with the simple rules (setup guide, \u201cOptional: extra protection\u201d). Firebase says: ' + TLexplain(backend.authErr))));
     if (S.resume) wrap.appendChild(h('div', { class: 'banner info' },
-      h('span', { text: 'Game ' + S.resume.code + ' is still running' + (S.resume.G.qi >= 0 ? ' (question ' + (S.resume.G.qi + 1) + ' of ' + S.resume.G.qn + ').' : ' (in the lobby).') + ' ' }),
+      h('span', { text: 'Game ' + S.resume.code + ' is still running' + (S.resume.G.qi < 0 ? ' (in the lobby).' : S.resume.G.qi < (S.resume.G.wu || 0) ? ' (warm-up).' : ' (question ' + (S.resume.G.qi + 1 - (S.resume.G.wu || 0)) + ' of ' + (S.resume.G.qn - (S.resume.G.wu || 0)) + ').') + ' ' }),
       h('button', { class: 'btn primary small', type: 'button', text: 'Resume it', onclick: resumeGame }),
       TLconfirmBtn('btn ghost small', 'Discard it', 'Sure? Discard', function () { TLstore.del('tl.host'); S.resume = null; render(); })));
 
@@ -3726,7 +3838,11 @@ function TLmountHost(root, backend, opts) {
 
     el.qlist = h('ol', { class: 'q-list' });
     el.qcount = h('span', { class: 'count' });
+    el.warm = h('div', { class: 'warm-slot' });
     var questions = h('section', { class: 'su-panel' },
+      h('h2', { text: 'Warm-up' }),
+      h('p', { class: 'hint', text: 'An optional practice round before question 1, so everyone sees how the game works. It scores no points, and its card stays on the timeline.' }),
+      el.warm,
       h('h2', null, 'Questions ', el.qcount),
       h('p', { class: 'hint', text: S.isSample ? 'These are sample questions so you can try the game. Replace them with your own. Teams get them in this order.' : 'Teams get the questions in this order. Aim for 8 to 12.' }),
       el.qlist,
@@ -3736,6 +3852,7 @@ function TLmountHost(root, backend, opts) {
     wrap.appendChild(h('div', { class: 'su-grid' }, settings, questions));
     root.appendChild(wrap);
     drawQList();
+    drawWarm();
   }
 
   function drawQList() {
@@ -3745,17 +3862,33 @@ function TLmountHost(root, backend, opts) {
     b.qs.forEach(function (q, i) { el.qlist.appendChild(qItem(q, i)); });
   }
 
-  function qItem(q, i) {
+  function drawWarm() {
+    var b = S.bank;
+    TLclear(el.warm);
+    if (b.warm) {
+      el.warm.appendChild(h('ol', { class: 'q-list' }, qItem(b.warm, 'w', { num: 'W', redraw: drawWarm, move: false,
+        remove: function () { b.warm = null; saveBank(); drawWarm(); } })));
+    } else {
+      el.warm.appendChild(h('button', { class: 'btn ghost', type: 'button', text: '+ Add a warm-up question', onclick: function () {
+        b.warm = { k: 'event', l: '', p: '', y: null, b: null }; S.open.w = true; saveBank(); drawWarm();
+      } }));
+    }
+  }
+
+  /* One question in the editor. i is its position, or 'w' for the warm-up. */
+  function qItem(q, i, ctx) {
     var b = S.bank, id = 'h-q' + i + '-';
+    ctx = ctx || { num: String(i + 1), redraw: drawQList, move: true,
+      remove: function () { b.qs.splice(i, 1); S.open = {}; saveBank(); drawQList(); } };
     var titleEl = h('span', { class: 'q-title', text: q.l || 'Untitled question' });
     var yearEl = h('span', { class: 'q-year', text: q.y == null ? 'year?' : String(q.y) });
     var det = h('details', { class: 'q-item', open: !!S.open[i] });
     det.addEventListener('toggle', function () { S.open[i] = det.open; });
     det.appendChild(h('summary', null,
-      h('span', { class: 'q-num', text: String(i + 1) }),
+      h('span', { class: 'q-num', text: ctx.num }),
       h('span', { class: 'q-kind', text: q.k === 'song' ? '♪' : '◆', title: q.k === 'song' ? 'Song' : 'Event' }),
       titleEl, yearEl));
-    function redraw() { S.open[i] = true; saveBank(); drawQList(); }
+    function redraw() { S.open[i] = true; saveBank(); ctx.redraw(); }
 
     var body = h('div', { class: 'q-body' });
     body.appendChild(h('div', { class: 'fld' }, h('span', { class: 'fld-l', text: 'Type' }),
@@ -3787,7 +3920,7 @@ function TLmountHost(root, backend, opts) {
       } else {
         body.appendChild(field('Accepted answers, separated by commas',
           h('input', { id: id + 'acc', type: 'text', maxlength: '300', value: (q.b.acc || []).join(', '), placeholder: 'e.g. September, syyskuu', oninput: function (e) { q.b.acc = e.target.value.split(',').map(function (s) { return s.trim(); }).filter(Boolean); saveBank(); } }),
-          'The first one is shown as the right answer. Capital letters and accents do not matter.'));
+          'Add every spelling you accept. Capital letters, accents and one typo in words of five letters or more are forgiven. The first answer is shown as the right one.'));
       }
     }
     function move(d) {
@@ -3797,9 +3930,11 @@ function TLmountHost(root, backend, opts) {
       saveBank(); drawQList();
     }
     body.appendChild(h('div', { class: 'q-tools' },
-      h('button', { class: 'btn ghost small', type: 'button', text: '↑ Move up', disabled: i === 0, onclick: function () { move(-1); } }),
-      h('button', { class: 'btn ghost small', type: 'button', text: '↓ Move down', disabled: i === b.qs.length - 1, onclick: function () { move(1); } }),
-      TLconfirmBtn('btn ghost small danger', 'Delete', 'Sure? Delete', function () { b.qs.splice(i, 1); S.open = {}; saveBank(); drawQList(); })));
+      ctx.move ? [
+        h('button', { class: 'btn ghost small', type: 'button', text: '↑ Move up', disabled: i === 0, onclick: function () { move(-1); } }),
+        h('button', { class: 'btn ghost small', type: 'button', text: '↓ Move down', disabled: i === b.qs.length - 1, onclick: function () { move(1); } })
+      ] : null,
+      TLconfirmBtn('btn ghost small danger', 'Delete', 'Sure? Delete', ctx.remove)));
     det.appendChild(body);
     return h('li', null, det);
   }
@@ -3846,10 +3981,10 @@ function TLmountHost(root, backend, opts) {
   function renderStage() {
     var G = S.G, ph = G.phase;
     var stage = h('div', { class: 'host stage ph-' + ph });
-    var mid = (ph === 'question' || ph === 'locked' || ph === 'reveal') ? T('question_n', { i: G.qi + 1, n: G.qn }) : ph === 'final' ? T('final_results') : '';
+    var mid = (ph === 'question' || ph === 'locked' || ph === 'reveal') ? (G.q && G.q.w ? T('warm_np') : T('question_n', { i: G.qi + 1 - (G.wu || 0), n: G.qn - (G.wu || 0) })) : ph === 'final' ? T('final_results') : '';
     stage.appendChild(h('header', { class: 'st-head' },
       h('div', { class: 'st-title', text: G.title }),
-      h('div', { class: 'st-mid', text: mid }),
+      h('div', { class: 'st-mid' + (G.q && G.q.w && ph !== 'title' ? ' warm' : ''), text: mid }),
       h('div', { class: 'st-join' },
         ph !== 'lobby' && ph !== 'final' ? h('span', { class: 'st-joinline' }, T('join_at') + ' ', h('b', { text: joinShort() }), ' · ' + T('code_word') + ' ', h('b', { class: 'jcode', text: S.code })) : null,
         h('button', { class: 'icon-btn', type: 'button', title: T('fullscreen'), 'aria-label': T('fullscreen'), onclick: goFull, text: '⛶' }))));
@@ -3860,13 +3995,15 @@ function TLmountHost(root, backend, opts) {
     if (ph === 'lobby') lobbyView(main);
     else if (ph === 'question' || ph === 'locked') questionView(main);
     else if (ph === 'reveal') revealView(main);
+    else if (ph === 'title') titleView(main);
     else finalView(main);
     stage.appendChild(h('section', { class: 'st-timeline', 'aria-label': 'Timeline' },
       ph === 'lobby' ? h('div', { class: 'tl-cap', text: T('starter_card') }) : null,
       TLgarland(G.cards, { pick: ph === 'question' || ph === 'locked', newIdx: ph === 'reveal' ? G.cards.length - 1 : -1 })));
     stage.appendChild(controls());
     root.appendChild(stage);
-    if (ph === 'lobby') S.stopFx = TLsnow(stage);
+    if (ph === 'lobby' || (ph === 'title' && G.tk === 'warm')) S.stopFx = TLsnow(stage);
+    if (ph === 'title' && G.tk === 'game') S.stopFx = TLconfetti(stage);
     if (ph === 'final' && !G.closed) S.stopFx = TLconfetti(stage);
     tick();
   }
@@ -3923,11 +4060,24 @@ function TLmountHost(root, backend, opts) {
       h('div', { class: 'timer-row' }, el.ring,
         h('div', { class: 'timer-txt' }, locked ? h('div', { class: 'tu', text: T('times_up') }) : null, el.count, locked ? h('div', { class: 'lk', text: T('locked') }) : null)),
       q.b ? h('div', { class: 'bonus-box' },
-        h('div', { class: 'bb-tag', text: T('bonus_pts', { n: q.bp }) }),
+        h('div', { class: 'bb-tag', text: q.w ? T('bonus') : T('bonus_pts', { n: q.bp }) }),
         h('p', { class: 'bb-q', text: q.b.q }),
         q.b.t === 'mc' ? h('div', { class: 'bb-opts' }, q.b.o.map(function (o) { return h('div', { class: 'bb-opt', text: o }); }))
           : h('p', { class: 'bb-type', text: T('bonus_type') })) : null);
     main.appendChild(h('div', { class: 'q-grid' }, left, right));
+  }
+
+  /* Full-screen title cards: "Warm-up" (with how to play) and "Game on!" before question 1. */
+  function titleView(main) {
+    var G = S.G, warm = G.tk === 'warm';
+    var big = warm ? T('warm') : T('tc_game_big');
+    main.appendChild(h('div', { class: 'title-card ' + (warm ? 'tc-warm' : 'tc-game') },
+      h('div', { class: 'tc-kicker', text: warm ? T('tc_warm_kicker') : T('tc_game_kicker', { n: G.qn - (G.wu || 0) }) }),
+      h('div', { class: 'tc-big', style: '--len:' + Math.max(6, big.length), text: big }),
+      h('p', { class: 'tc-sub', text: warm ? T('tc_warm_sub') : T('tc_game_sub', { pp: S.gbank.pp, bp: S.gbank.bp }) }),
+      warm ? h('ol', { class: 'tc-steps' }, ['tc_step1', 'tc_step2', 'tc_step3'].map(function (k, i) {
+        return h('li', null, h('span', { class: 'tc-num', text: String(i + 1) }), h('span', { text: T(k) }));
+      })) : null));
   }
 
   function revealView(main) {
@@ -3949,7 +4099,7 @@ function TLmountHost(root, backend, opts) {
         })),
         q.b ? h('p', { class: 'rv-bonus' }, h('span', { class: 'k', text: T('bonus_answer') + ': ' }), h('b', { text: rv.ba }),
           h('span', { class: 'rv-bn', text: '   ·   ' + T('n_bonus', { a: rv.nBonus }) })) : null));
-    main.appendChild(h('div', { class: 'rv-grid' }, left, standings(7)));
+    main.appendChild(h('div', { class: 'rv-grid' }, left, q.w ? h('div', { class: 'standings' }, h('h3', { text: T('warm') }), h('p', { class: 'warm-note', text: T('warm_note') })) : standings(7)));
   }
 
   function standings(limit) {
@@ -3985,21 +4135,47 @@ function TLmountHost(root, backend, opts) {
       })) : null));
   }
 
+  /* Lists every team during the game; clicking a name twice removes that team (for example, a rude name). */
+  function openTeams() {
+    var list = h('div', { class: 'tc-list' });
+    var ov = h('div', { class: 'overlay', onclick: function (e) { if (e.target === ov) close(); } });
+    function close() { el.teamsDraw = null; if (ov.parentNode) ov.parentNode.removeChild(ov); render(); }
+    function draw() {
+      if (!S.G) return;
+      TLclear(list);
+      var ids = C.teamIds(S.teams, S.G.gone), names = C.displayNames(S.teams, ids);
+      if (!ids.length) list.appendChild(h('p', { class: 'io-msg', text: T('no_teams_yet') }));
+      ids.forEach(function (id) {
+        list.appendChild(TLconfirmBtn('team-chip', names[id], T('remove_q'), function () { removeTeam(id); draw(); }));
+      });
+    }
+    ov.appendChild(h('div', { class: 'dialog', role: 'dialog', 'aria-label': T('teams_btn') },
+      h('h2', { text: T('teams_btn') }), h('p', { class: 'io-msg', text: T('remove_hint') }), list,
+      h('div', { class: 'io-btns' }, h('button', { class: 'btn ghost small', type: 'button', text: T('close'), onclick: close }))));
+    root.appendChild(ov);
+    el.teamsDraw = draw;
+    draw();
+  }
+
   function controls() {
-    var G = S.G, ph = G.phase, bar = h('footer', { class: 'st-ctl' });
+    var G = S.G, ph = G.phase, bar = h('footer', { class: 'st-ctl' }), left = h('div', { class: 'ctl-left' });
+    bar.appendChild(left);
+    if (ph !== 'final') left.appendChild(TLconfirmBtn('btn ghost', T('main_menu'), T('end_game_q'), abandon));
+    if (ph === 'question' || ph === 'locked' || ph === 'reveal' || ph === 'title') left.appendChild(h('button', { class: 'btn ghost', type: 'button', text: T('teams_btn'), onclick: openTeams }));
     el.saving = h('span', { class: 'saving', hidden: true, text: T('saving') });
-    bar.appendChild(el.saving);
+    left.appendChild(el.saving);
     if (ph === 'lobby') {
       if (backend.demo) bar.appendChild(h('button', { class: 'btn ghost', type: 'button', text: 'Add 6 robot teams', onclick: addBots }));
-      bar.appendChild(TLconfirmBtn('btn ghost', 'Back to setup', 'Cancel this game?', abandon));
-      el.primary = btn(T('start_game'), nextQuestion);
+      el.primary = btn(T(G.wu ? 'start_warm' : 'start_game'), nextQuestion);
     } else if (ph === 'question') {
       if (G.endsAt) bar.appendChild(h('button', { class: 'btn ghost', type: 'button', text: T('add_time'), onclick: addTime }));
       el.primary = btn(T('lock_now'), lock);
     } else if (ph === 'locked') {
       el.primary = btn(T('collecting'), reveal); el.primary.disabled = true;
+    } else if (ph === 'title') {
+      el.primary = btn(G.tk === 'warm' ? T('show_warm_q') : T('show_q1'), nextQuestion);
     } else if (ph === 'reveal') {
-      el.primary = btn(G.qi + 1 >= G.qn ? T('show_final') : T('next_q'), nextQuestion);
+      el.primary = btn(G.qi + 1 >= G.qn ? T('show_final') : G.q.w ? T('start_game') : T('next_q'), nextQuestion);
     } else {
       el.primary = TLconfirmBtn('btn primary', T('new_game'), T('new_game') + '?', abandon);
     }
@@ -4020,7 +4196,13 @@ function TLmountHost(root, backend, opts) {
           else TLstore.del('tl.host');
         });
       }
-    }).then(function () { if (!S.G) render(); }, function (e) { S.online = 'bad'; S.err = TLexplain(e); if (!S.G) render(); });
+    }).then(function () { if (!S.G) render(); }, function (e) {
+      if (/permission-denied/.test((e && e.code) || '')) {
+        S.online = 'off';
+        S.err = 'The game is switched off: the database rules block it. To play, publish your Game ON rules in the Firebase console (setup guide, \u201cSwitch the game off and on\u201d).';
+      } else { S.online = 'bad'; S.err = TLexplain(e); }
+      if (!S.G) render();
+    });
   }
 
   return {
@@ -4057,7 +4239,11 @@ function TLmountPlayer(root, backend, opts) {
     S.G = undefined;
     backend.init().then(function () {
       if (S.dead) return;
-      S.unsub = backend.watchGame(code, onGame, function (e) { S.err = TLexplain(e); S.joining = false; S.pendingJoin = null; render(true); });
+      if (S.me && String(S.me.tid).indexOf(backend.uid + '_') !== 0) {
+        /* This browser's sign-in changed (for example, a private window was closed): join again under the same name. */
+        S.form.code = S.me.code; S.form.name = S.me.name || ''; forgetMe(); S.G = undefined; render(true); return;
+      }
+      S.unsub = backend.watchGame(code, onGame, function (e) { S.err = /permission-denied/.test(e.code || '') ? T('p_off') : TLexplain(e); S.joining = false; S.pendingJoin = null; render(true); });
     }).catch(function (e) { S.err = TLexplain(e); S.joining = false; S.pendingJoin = null; render(true); });
   }
   function onGame(G) {
@@ -4066,15 +4252,15 @@ function TLmountPlayer(root, backend, opts) {
     if (S.pendingJoin) {
       var pj = S.pendingJoin; S.pendingJoin = null; S.joining = false;
       if (!G) { S.err = T('p_nogame'); if (S.unsub) { S.unsub(); S.unsub = null; } S.G = undefined; render(true); return; }
-      S.me = { code: pj.code, gid: G.gid || '', tid: C.makeId(), name: pj.name, sent: {} };
+      S.me = { code: pj.code, gid: G.gid || '', tid: backend.uid + '_' + C.makeId().slice(0, 10), name: pj.name, sent: {} };
       saveMe(); S.err = ''; S.healed = true;
       backend.setTeam(S.me.code, S.me.tid, { n: S.me.name, at: backend.now() }).catch(function (e) { S.err = TLexplain(e); render(true); });
-      backend.syncClock(S.me.code, S.me.tid);
+      backend.syncClock(S.me.code);
     } else if (S.me && G && !S.healed) {
       /* After a reload: make sure the team still exists on the server and re-measure the clock. */
       S.healed = true;
       if ((G.gone || []).indexOf(S.me.tid) < 0) backend.setTeam(S.me.code, S.me.tid, { n: S.me.name }).catch(function () {});
-      backend.syncClock(S.me.code, S.me.tid);
+      backend.syncClock(S.me.code);
     }
     if (S.me && G === null) { forgetMe(); S.err = T('p_nogame'); if (S.unsub) { S.unsub(); S.unsub = null; } S.G = undefined; render(true); return; }
     /* Same code, different game (the host started over): this phone is not part of it yet. */
@@ -4154,7 +4340,7 @@ function TLmountPlayer(root, backend, opts) {
   function render(force) {
     if (S.dead) return;
     var v = viewOf(), G = S.G;
-    var key = v + ':' + (G ? G.qi + ':' + G.lang + ':' + (G.closed ? 1 : 0) : '') + ':' + (S.me ? S.me.tid : '');
+    var key = v + ':' + (G ? G.qi + ':' + (G.tk || '') + ':' + G.lang + ':' + (G.closed ? 1 : 0) : '') + ':' + (S.me ? S.me.tid : '');
     if (!force && key === S.viewKey) { if (el.score) drawScore(); return; }
     S.viewKey = key;
     TLclear(root); el = {};
@@ -4172,6 +4358,7 @@ function TLmountPlayer(root, backend, opts) {
       else if (v === 'question') questionView(page);
       else if (v === 'locked') lockedView(page);
       else if (v === 'reveal') revealView(page);
+      else if (v === 'title') titleView(page);
       else finalView(page);
       drawScore();
     }
@@ -4196,7 +4383,8 @@ function TLmountPlayer(root, backend, opts) {
         S.err ? h('p', { class: 'p-err', role: 'alert', text: S.err }) : null,
         h('button', { class: 'btn-send ready', type: 'submit', disabled: S.joining, text: S.joining ? T('p_connecting') : T('p_join') }),
         h('p', { class: 'p-note', text: T('one_phone') })),
-      opts.hostLink ? h('a', { class: 'p-link', href: '#host', text: 'Host a game' }) : null));
+      h('p', { class: 'p-ver', text: TL_VERSION }),
+));
   }
 
   function lobbyView(page) {
@@ -4224,7 +4412,7 @@ function TLmountPlayer(root, backend, opts) {
     el.timer = h('div', { class: 'p-timer' }, h('span', { class: 'p-tbar' }, el.tfill), el.tnum);
     var main = h('main', { class: 'p-main' }, el.timer,
       h('div', { class: 'p-q' },
-        h('span', { class: 'badge', text: T('question_n', { i: qi + 1, n: G.qn }) + ' · ' + T(q.k) }),
+        h('span', { class: 'badge' + (q.w ? ' warm' : ''), text: (q.w ? T('warm_np') : T('question_n', { i: qi + 1 - (G.wu || 0), n: G.qn - (G.wu || 0) })) + ' · ' + T(q.k) }),
         h('p', { class: 'p-qtext', text: q.p || T(q.k === 'song' ? 'when_song' : 'when_event') })));
 
     /* 1. the timeline, top = oldest; every gap is a button */
@@ -4262,7 +4450,7 @@ function TLmountPlayer(root, backend, opts) {
         body = h('input', { id: 'p-bonus', class: 'p-input', type: 'text', autocomplete: 'off', maxlength: '60', placeholder: T('p_type'), 'aria-label': T('p_type'),
           value: typeof S.draft.b === 'string' ? S.draft.b : '', oninput: function (e) { var v = e.target.value.trim(); S.draft.b = v === '' ? null : v; footer(); } });
       }
-      main.appendChild(h('section', { class: 'p-sec' }, h('h2', { text: '2 · ' + T('bonus_pts', { n: q.bp }) }), h('p', { class: 'p-bq', text: q.b.q }), body));
+      main.appendChild(h('section', { class: 'p-sec' }, h('h2', { text: '2 · ' + (q.w ? T('bonus') : T('bonus_pts', { n: q.bp })) }), h('p', { class: 'p-bq', text: q.b.q }), body));
     }
     page.appendChild(main);
     el.status = h('p', { class: 'send-status', role: 'status' });
@@ -4277,6 +4465,13 @@ function TLmountPlayer(root, backend, opts) {
     if (mine.s != null) out.push(C.letter(mine.s) + ' · ' + TLslotLabel(T, q.ys, mine.s));
     if (q.b && mine.b != null && mine.b !== '') out.push(T('bonus') + ': ' + (q.b.t === 'mc' ? q.b.o[mine.b] : mine.b));
     return out;
+  }
+
+  function titleView(page) {
+    var warm = S.G.tk === 'warm';
+    page.appendChild(h('main', { class: 'p-main center' },
+      h('div', { class: 'p-title ' + (warm ? 'warm' : 'game'), text: warm ? T('warm') : T('tc_game_big') }),
+      h('p', { class: 'p-lead', text: warm ? T('p_tc_warm') : T('p_tc_game') })));
   }
 
   function lockedView(page) {
@@ -4313,11 +4508,12 @@ function TLmountPlayer(root, backend, opts) {
           me.b !== true ? h('small', { text: T('p_right_was', { a: rv.ba }) }) : null)));
       main.appendChild(rows);
       var rk = C.ranking(G.sc), my = rk.filter(function (r) { return r.id === S.me.tid; })[0];
-      main.appendChild(h('div', { class: 'p-total' },
+      if (q.w) main.appendChild(h('p', { class: 'p-lead warm-done', text: T('p_warm_done') }));
+      else main.appendChild(h('div', { class: 'p-total' },
         h('div', { class: 'pt-delta' + (me.d > 0 ? '' : ' zero'), text: me.d === 1 ? T('p_points_1') : T('p_points', { n: me.d }) }),
         h('div', { class: 'pt-rank', text: T('p_score') + ' ' + me.s + ' · ' + T('p_rank', { r: my ? my.rank : '?', n: rk.length }) })));
     }
-    main.appendChild(h('p', { class: 'p-note', text: G.qi + 1 >= G.qn ? '' : T('p_next') }));
+    main.appendChild(h('p', { class: 'p-note', text: G.qi + 1 >= G.qn || q.w ? '' : T('p_next') }));
     page.appendChild(main);
   }
 
@@ -4365,8 +4561,8 @@ function TLmountPlayer(root, backend, opts) {
 (function () {
   'use strict';
   var cfgEl = document.getElementById('firebase-config');
-  var cfg = window.__TL_CONFIG__ || TLparseConfig(cfgEl ? cfgEl.textContent : '');
-  var backend = cfg ? new TLFirestoreBackend(cfg) : new TLLocalBackend();
+  var inline = window.__TL_CONFIG__ || TLparseConfig(cfgEl ? cfgEl.textContent : '');
+  var backend = null;
   var stage = document.getElementById('stage'), dock = document.getElementById('dock'), tabs = document.getElementById('demo-tabs');
   var mounted = [];
 
@@ -4396,11 +4592,22 @@ function TLmountPlayer(root, backend, opts) {
     dock.hidden = true;
     if (hash.toLowerCase() === 'host') { mounted.push(TLmountHost(stage, backend, {})); return; }
     var code = /^[A-Za-z0-9]{3,6}$/.test(hash) ? hash.toUpperCase() : '';
-    mounted.push(TLmountPlayer(stage, backend, { code: code, hostLink: true }));
+    mounted.push(TLmountPlayer(stage, backend, { code: code }));
   }
 
-  window.addEventListener('hashchange', route);
-  route();
+  function start(cfg) {
+    backend = cfg ? new TLFirestoreBackend(cfg) : new TLLocalBackend();
+    TLclear(stage);
+    window.addEventListener('hashchange', route);
+    route();
+  }
+  if (inline) start(inline);
+  else if (/^https?:$/.test(location.protocol)) {
+    stage.appendChild(h('p', { class: 'loading', text: 'Loading\u2026' }));
+    fetch('firebase-config.txt', { cache: 'no-store' })
+      .then(function (r) { return r.ok ? r.text() : ''; })
+      .then(function (t) { start(TLparseConfig(t)); }, function () { start(null); });
+  } else start(null);
 })();
 
 </script>
