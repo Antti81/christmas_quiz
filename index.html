@@ -104,8 +104,8 @@ body.demo #dock{display:flex;flex-direction:column;flex:0 0 372px;height:100%;bo
 .badge{display:inline-block;background:var(--berry);color:#fff;font-weight:800;text-transform:uppercase;letter-spacing:.12em;font-size:.85em;padding:.3em .8em;border-radius:.4em}
 .k{color:var(--muted)}
 .snow{position:absolute !important;inset:0;width:100%;height:100%;pointer-events:none;z-index:0 !important}
-.st-list,.rest,.p-toplist{list-style:none;margin:0;padding:0}
-.st-row,.rest li,.p-toplist li{display:flex;align-items:center;gap:.6em;padding:.32em 0;border-bottom:1px solid rgba(46,95,81,.6)}
+.st-list,.p-toplist{list-style:none;margin:0;padding:0}
+.st-row,.p-toplist li{display:flex;align-items:center;gap:.6em;padding:.32em 0;border-bottom:1px solid rgba(46,95,81,.6)}
 .st-rank{flex:0 0 1.8em;font-family:var(--display);color:var(--muted);text-align:right}
 .st-name{flex:1;min-width:0;font-weight:700;overflow-wrap:anywhere}
 .st-score{flex:0 0 2.4em;text-align:right;font-family:var(--display);font-variant-numeric:tabular-nums}
@@ -216,6 +216,18 @@ body.demo #dock{display:flex;flex-direction:column;flex:0 0 372px;height:100%;bo
 .rv-facts p{margin:0 0 .5em;font-size:1.2em;overflow-wrap:anywhere}
 .rv-gap b{color:var(--good)} .rv-bonus b{color:var(--gold)}
 .rv-n{font-weight:700}
+.reveal-bonuses{margin-top:1em;padding:.7em 1em;border:2px solid var(--line);border-radius:1em;background:var(--pine)}
+.reveal-bonuses h3{margin:0 0 .5em;font-family:var(--display);font-weight:400;font-size:1.15em;color:var(--ice)}
+.bonus-replies{list-style:none;margin:0;padding:0 .25em 0 0;display:grid;gap:.4em .7em;
+  grid-template-columns:repeat(auto-fit,minmax(min(100%,16em),1fr));max-height:12em;overflow:auto}
+.bonus-replies li{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:.08em .5em;padding:.35em .65em;
+  min-width:0;background:var(--night);border-radius:.5em;line-height:1.2;overflow-wrap:anywhere}
+.bonus-reply-team{font-size:.82em;color:var(--muted)}
+.bonus-reply-text{grid-column:1/-1;font-weight:700}
+.bonus-reply-mark{line-height:1;font-weight:800}
+.bonus-reply-mark.correct{color:var(--good)}
+.bonus-reply-mark.wrong{color:var(--bad)}
+.bonus-reply-text.missing{color:var(--muted);font-weight:400}
 .hist{display:flex;gap:.4em;align-items:flex-end;height:7em;margin:.6em 0 .9em}
 .hbar{display:flex;flex-direction:column;align-items:center;height:100%;flex:0 1 2.2em;min-width:0}
 .hv{font-size:.85em;font-weight:700;font-variant-numeric:tabular-nums}
@@ -251,17 +263,23 @@ body.demo #dock{display:flex;flex-direction:column;flex:0 0 372px;height:100%;bo
 .warm-note{font-size:1.25em;margin:0;line-height:1.35}
 .warm-done{text-align:center;font-weight:700}
 
-.final{display:flex;flex-direction:column;align-items:center;gap:1.2em}
-.podium{display:flex;align-items:flex-end;justify-content:center;gap:1em;width:100%;max-width:52em}
-.pod{flex:1 1 0;min-width:0;text-align:center}
-.pod-name{font-family:var(--display);font-size:1.6em;line-height:1.1;overflow-wrap:anywhere}
-.pod.p1 .pod-name{font-size:2.2em;color:var(--gold)}
-.pod-score{color:var(--muted);font-weight:700;margin:.2em 0 .4em}
-.pod-block{background:var(--pine-2);border-radius:.6em .6em 0 0;display:grid;place-items:center;font-family:var(--display);font-size:2.4em;border:2px solid var(--line);border-bottom:0;height:2.6em}
-.p1 .pod-block{height:3.6em;background:var(--gold);color:var(--ink);border-color:var(--gold)}
-.p3 .pod-block{height:1.9em}
-.rest{columns:2;column-gap:2.5em;width:100%;max-width:52em;max-height:11em;overflow:auto}
-.rest li{break-inside:avoid}
+.final{display:flex;flex-direction:column;align-items:center;gap:1em}
+.host.stage.ph-final{background:radial-gradient(ellipse at 50% 25%,rgba(243,185,77,.13),transparent 58%),
+  radial-gradient(ellipse at 50% 0%,#1c4136,transparent 76%),var(--night)}
+.final-groups{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,14em),1fr));gap:.85em;width:100%;max-width:64em}
+.final-group{min-width:0;background:rgba(22,53,45,.94);border:2px solid var(--line);border-radius:1em;
+  padding:.75em .9em;animation:rise .55s ease both}
+.final-group h3{font:400 1.18em/1.2 var(--display);color:var(--ice);margin:0 0 .4em;overflow-wrap:anywhere}
+.final-group .st-list{max-height:11em;overflow:auto}
+.final-group .st-row{animation:none}
+.final-group .st-row:last-child{border-bottom:0}
+.final-group .st-score{flex:0 0 auto;white-space:nowrap}
+.final-group.first{border-color:var(--gold);box-shadow:0 0 1.5em rgba(243,185,77,.24);animation:rise .7s .65s both}
+.final-group.first h3,.final-group.first .st-score{color:var(--gold)}
+.final-group.first .st-name{font:400 1.3em/1.2 var(--display)}
+.final-group.podium{animation-delay:.3s}
+.final-message{margin:0;text-align:center;text-wrap:balance;color:var(--gold);
+  font:400 clamp(1.25em,3.9vw,2.3em)/1.2 var(--display);text-shadow:.055em .055em 0 #67442a;animation:rise .6s 1.1s both}
 
 /* ---------- big screen: setup ---------- */
 .host.setup{font-size:16px;max-width:1180px;margin:0 auto;padding:24px 20px 60px;display:flex;flex-direction:column;gap:16px}
@@ -407,7 +425,6 @@ body.demo #dock{display:flex;flex-direction:column;flex:0 0 372px;height:100%;bo
   .rv-card{max-width:none;width:auto}
   .q-text{font-size:2.2em} .q-text.lg{font-size:1.8em} .q-text.xl{font-size:1.4em}
   .su-grid{grid-template-columns:minmax(0,1fr)}
-  .rest{columns:1}
   .opts{grid-template-columns:minmax(0,1fr)}
 }
 
@@ -2802,6 +2819,12 @@ var TLCore = (function () {
     return b.t === 'mc' ? String(b.o[b.c]) : String((b.acc || [])[0] || '');
   }
 
+  function bonusReply(b, ans) {
+    if (ans == null || ans === '') return null;
+    var value = b.t === 'mc' ? b.o[Number(ans)] : ans;
+    return typeof value === 'string' ? value.trim().slice(0, 60) || null : null;
+  }
+
   function displayNames(teams, ids) {
     var seen = {}, out = {};
     ids.forEach(function (id) {
@@ -2827,6 +2850,7 @@ var TLCore = (function () {
     var ids = teamIds(teams, gone);
     var names = displayNames(teams, ids);
     var sc = {}, nAns = 0, nPlace = 0, nBonus = 0;
+    var replies = round.bonus ? [] : null;
     ids.forEach(function (id) {
       var a = teams[id].a && teams[id].a[round.qi];
       var p = null, b = null;
@@ -2837,12 +2861,13 @@ var TLCore = (function () {
       }
       if (p === true) nPlace++;
       if (b === true) nBonus++;
+      if (replies) replies.push({ team: names[id], answer: bonusReply(round.bonus, a && a.b), correct: b });
       /* The warm-up shows right and wrong but changes no scores. */
       var delta = round.warm ? 0 : (p === true ? round.pp : 0) + (b === true ? round.bp : 0);
       var before = (prev && prev[id]) || { s: 0, c: 0 };
       sc[id] = { n: names[id], s: before.s + delta, c: before.c + (!round.warm && p === true ? 1 : 0), d: delta, p: p, b: b };
     });
-    return { sc: sc, rv: { y: round.year, slots: ok, dist: dist, nAns: nAns, nTeams: ids.length, nPlace: nPlace, nBonus: nBonus } };
+    return { sc: sc, rv: { y: round.year, slots: ok, dist: dist, nAns: nAns, nTeams: ids.length, nPlace: nPlace, nBonus: nBonus, replies: replies } };
   }
 
   /* Most points first; equal points are split by correct placements; still equal = shared place. */
@@ -2988,7 +3013,7 @@ var TLCore = (function () {
 if (typeof module === 'object' && module.exports) module.exports = TLCore;
 
 /* ---------- Words shown to guests, in English and Finnish ---------- */
-var TL_VERSION = 'Version 6 \u00b7 17 Nov 2026';
+var TL_VERSION = 'Version 7 \u00b7 26 Nov 2026';
 
 var TLWords = {
   en: {
@@ -3022,10 +3047,16 @@ var TLWords = {
     n_right: '{a} of {n} teams placed it right',
     where_placed: 'Where teams placed it',
     bonus_answer: 'Bonus answer',
+    bonus_replies: 'Team bonus answers',
     n_bonus: '{a} got the bonus',
     standings: 'Standings',
     and_more: '+ {n} more',
     final_results: 'Final results',
+    final_winner: 'Winner',
+    final_winners: 'Joint winners',
+    final_podium: '2nd–3rd place',
+    final_other: '4th place and beyond',
+    final_message: 'Whatever the score, we all rocked the ledger!',
     pts: 'pts',
     before: 'Before {y}', after: 'After {y}',
     new_game: 'New game',
@@ -3126,10 +3157,16 @@ var TLWords = {
     n_right: '{a}/{n} joukkuetta sijoitti oikein',
     where_placed: 'Mihin joukkueet sijoittivat',
     bonus_answer: 'Bonusvastaus',
+    bonus_replies: 'Joukkueiden bonusvastaukset',
     n_bonus: '{a} sai bonuksen',
     standings: 'Tilanne',
     and_more: '+ {n} muuta',
     final_results: 'Lopputulokset',
+    final_winner: 'Voittaja',
+    final_winners: 'Jaettu voitto',
+    final_podium: 'Sijat 2–3',
+    final_other: 'Sijasta 4 eteenpäin',
+    final_message: 'Pisteistä viis, tänään rokattiin yhdessä!',
     pts: 'p',
     before: 'Ennen vuotta {y}', after: 'Vuoden {y} jälkeen',
     new_game: 'Uusi peli',
@@ -3510,7 +3547,7 @@ function TLsnow(host) {
 }
 
 /* A burst of paper confetti for the winners. */
-function TLconfetti(host) {
+function TLconfetti(host, finale) {
   if (TLreducedMotion()) return function () {};
   var cv = h('canvas', { class: 'snow', 'aria-hidden': 'true' });
   host.appendChild(cv);
@@ -3518,6 +3555,14 @@ function TLconfetti(host) {
   var cols = ['#f3b94d', '#d9434d', '#9cd9d1', '#f7eedb', '#52d08f'];
   cv.width = host.clientWidth; cv.height = host.clientHeight;
   for (var i = 0; i < 160; i++) bits.push({ x: Math.random() * cv.width, y: -Math.random() * cv.height * 0.6, vx: (Math.random() - 0.5) * 80, vy: 90 + Math.random() * 170, s: 5 + Math.random() * 7, a: Math.random() * 6.28, va: (Math.random() - 0.5) * 8, c: cols[i % cols.length] });
+  if (finale) {
+    for (var j = 0; j < 96; j++) {
+      var left = j % 2 === 0;
+      bits.push({ x: cv.width * (left ? .08 : .92), y: cv.height * (.18 + Math.random() * .18),
+        vx: (left ? 1 : -1) * (50 + Math.random() * 260), vy: -75 + Math.random() * 210,
+        s: 6 + Math.random() * 8, a: Math.random() * 6.28, va: (Math.random() - .5) * 9, c: cols[j % cols.length] });
+    }
+  }
   var last = performance.now(), t0 = last;
   function frame(t) {
     if (!alive) return;
@@ -3761,7 +3806,7 @@ function TLmountHost(root, backend, opts) {
     if (!S.G || S.G.phase === 'final') return;
     var t = e.target && e.target.tagName;
     if (t === 'INPUT' || t === 'TEXTAREA' || t === 'SELECT' || t === 'BUTTON' || t === 'SUMMARY') return;
-    if (e.target && e.target.closest && e.target.closest('.phone')) return;
+    if (e.target && e.target.closest && e.target.closest('.phone, .bonus-replies')) return;
     if (root.querySelector('.overlay')) return;
     if (e.key !== ' ' && e.key !== 'ArrowRight' && e.key !== 'PageDown') return;
     e.preventDefault();
@@ -4004,7 +4049,7 @@ function TLmountHost(root, backend, opts) {
     root.appendChild(stage);
     if (ph === 'lobby' || (ph === 'title' && G.tk === 'warm')) S.stopFx = TLsnow(stage);
     if (ph === 'title' && G.tk === 'game') S.stopFx = TLconfetti(stage);
-    if (ph === 'final' && !G.closed) S.stopFx = TLconfetti(stage);
+    if (ph === 'final' && !G.closed) S.stopFx = TLconfetti(stage, true);
     tick();
   }
 
@@ -4100,6 +4145,19 @@ function TLmountHost(root, backend, opts) {
         q.b ? h('p', { class: 'rv-bonus' }, h('span', { class: 'k', text: T('bonus_answer') + ': ' }), h('b', { text: rv.ba }),
           h('span', { class: 'rv-bn', text: '   ·   ' + T('n_bonus', { a: rv.nBonus }) })) : null));
     main.appendChild(h('div', { class: 'rv-grid' }, left, q.w ? h('div', { class: 'standings' }, h('h3', { text: T('warm') }), h('p', { class: 'warm-note', text: T('warm_note') })) : standings(7)));
+    if (q.b && rv.replies && rv.replies.length) {
+      main.appendChild(h('section', { class: 'reveal-bonuses' },
+        h('h3', { id: 'bonus-replies-heading', text: T('bonus_replies') }),
+        h('ul', { class: 'bonus-replies', tabindex: 0, 'aria-labelledby': 'bonus-replies-heading' }, rv.replies.map(function (reply) {
+          var hasAnswer = reply.answer != null, correct = reply.correct === true;
+          return h('li', null,
+            h('span', { class: 'bonus-reply-team', text: reply.team }),
+            hasAnswer ? h('span', { class: 'bonus-reply-mark ' + (correct ? 'correct' : 'wrong'),
+              'aria-label': T(correct ? 'p_right' : 'p_wrong'), title: T(correct ? 'p_right' : 'p_wrong'),
+              text: correct ? '✓' : '✗' }) : null,
+            h('span', { class: 'bonus-reply-text' + (hasAnswer ? '' : ' missing'), text: hasAnswer ? reply.answer : T('p_none') }));
+        }))));
+    }
   }
 
   function standings(limit) {
@@ -4118,21 +4176,28 @@ function TLmountHost(root, backend, opts) {
   }
 
   function finalView(main) {
-    var rk = C.ranking(S.G.sc), top = rk.slice(0, 3), rest = rk.slice(3);
-    var order = [[top[1], 2], [top[0], 1], [top[2], 3]];
-    var pod = h('div', { class: 'podium' }, order.map(function (o) {
-      var r = o[0];
-      if (!r) return h('div', { class: 'pod empty p' + o[1] });
-      return h('div', { class: 'pod p' + o[1] },
-        h('div', { class: 'pod-name', text: r.n }),
-        h('div', { class: 'pod-score', text: r.s + ' ' + T('pts') }),
-        h('div', { class: 'pod-block' }, h('span', { text: String(r.rank) })));
-    }));
+    var rk = C.ranking(S.G.sc);
+    if (!rk.length) {
+      main.appendChild(h('div', { class: 'final' }, h('p', { class: 'st-more', text: T('no_teams_yet') })));
+      return;
+    }
+    var winners = rk.filter(function (r) { return r.rank === 1; });
+    var groups = [
+      { key: 'first', label: winners.length === 1 ? 'final_winner' : 'final_winners', teams: winners },
+      { key: 'podium', label: 'final_podium', teams: rk.filter(function (r) { return r.rank > 1 && r.rank <= 3; }) },
+      { key: 'other', label: 'final_other', teams: rk.filter(function (r) { return r.rank >= 4; }) }
+    ];
     main.appendChild(h('div', { class: 'final' },
-      rk.length ? pod : h('p', { class: 'st-more', text: T('no_teams_yet') }),
-      rest.length ? h('ol', { class: 'rest' }, rest.map(function (r) {
-        return h('li', null, h('span', { class: 'st-rank', text: String(r.rank) }), h('span', { class: 'st-name', text: r.n }), h('span', { class: 'st-score', text: String(r.s) }));
-      })) : null));
+      h('div', { class: 'final-groups' }, groups.map(function (group) {
+        if (!group.teams.length) return null;
+        var label = 'final-' + group.key;
+        return h('section', { class: 'final-group ' + group.key },
+          h('h3', { id: label, text: T(group.label) }),
+          h('ol', { class: 'st-list', tabindex: 0, 'aria-labelledby': label }, group.teams.map(function (r) {
+            return h('li', { class: 'st-row' }, h('span', { class: 'st-rank', text: String(r.rank) }),
+              h('span', { class: 'st-name', text: r.n }), h('span', { class: 'st-score', text: r.s + ' ' + T('pts') }));
+          })));
+      })), h('p', { class: 'final-message', text: T('final_message') })));
   }
 
   /* Lists every team during the game; clicking a name twice removes that team (for example, a rude name). */
